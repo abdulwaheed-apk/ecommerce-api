@@ -12,7 +12,7 @@ import verifyToken from '../middlewares/auth.js'
 
 const router = Router()
 // Routes
-router.get('/', verifyToken, getUsers)
+router.get('/', getUsers)
 router.post('/register', register)
 router.post('/login', login)
 router.put('/profileUpdate', verifyToken, profileUpdate)

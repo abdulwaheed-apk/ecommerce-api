@@ -2,15 +2,16 @@ import express from 'express'
 import asyncHandler from 'express-async-handler'
 import { genSalt, hash, compare } from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcrypt'
 import { check, validationResult } from 'express-validator'
-import userModel from '../models/userModel.js'
+import User from '../models/userModel.js'
 
 // ? Controller Functions
 //@route /api/users
 //@method GET To get users
 //@access Admin
 export const getUsers = asyncHandler(async (req, res) => {
-    const users = await userModel.find()
+    const users = await User.find()
     if (users.length === 0) {
         res.status(404).json({ message: 'Users not found' })
     }
@@ -21,15 +22,11 @@ export const getUsers = asyncHandler(async (req, res) => {
 //@method POST To create user
 //@access public
 export const register = async (req, res) => {
-    const { full_name, email, phone_number, password } = req.body
-    // if express validator has not verified throw errors and not process further
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() })
-    }
+    const { full_name, email_address, phone_number, password } = req.body
+
     try {
         // Find if user already exist
-        const userExist = await userModel.findOne({ email })
+        const userExist = await User.findOne({ email_address })
         if (userExist) {
             res.status(400)
             throw new Error('User with similar email already exist')
@@ -38,9 +35,9 @@ export const register = async (req, res) => {
         const salt = await genSalt(10)
         const hashedPassword = await hash(password, salt)
         // create user
-        const user = await userModel.create({
+        const user = await User.create({
             full_name,
-            email,
+            email_address,
             phone_number,
             password: hashedPassword,
         })
@@ -59,42 +56,34 @@ export const register = async (req, res) => {
 //@method POST
 //@access public
 export const login = async (req, res) => {
-    //     const { email, password } = req.body
-    //     // if express validator has not verified throw errors and not process further
-    //     const errors = validationResult(req)
-    //     if (!errors.isEmpty()) {
-    //         return res.status(400).json({ errors: errors.array() })
-    //     }
-    //     try {
-    //         if (email === '' || password === '') {
-    //             return res
-    //                 .status(400)
-    //                 .json({ message: 'Kindly enter Login Credentials' })
-    //         }
-    //         const user = await findOne({ email })
-    //         if (!user) {
-    //             return res
-    //                 .status(404)
-    //                 .send({ message: 'User with this email not found' })
-    //         }
-    //         const isMatch = await compare(password, user.password)
-    //         if (isMatch) {
-    //             const token = await generateToken(user._id)
-    //             // res.cookie(token)
-    //             const { name, username } = user
-    //             // console.log(name, username)
-    //             res.status(200).json({
-    //                 name,
-    //                 username,
-    //                 message: 'you are authentic user',
-    //                 token,
-    //             })
-    //         } else {
-    //             res.status(400).json({ message: 'Invalid Password' })
-    //         }
-    //     } catch (error) {
-    //         res.status(500).json({ message: `Server Error ${error.message}` })
-    //     }
+    const { email_address, password } = req.body
+
+    try {
+        if (email_address === '' || password === '') {
+            return res
+                .status(400)
+                .json({ message: "Login fields can't be empty" })
+        }
+        const user = await User.findOne({ email_address })
+        if (!user) {
+            return res
+                .status(404)
+                .send({ message: 'User with this email not found' })
+        }
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (isMatch) {
+            const token = await generateToken(user._id)
+            // res.cookie(token)
+            res.status(200).json({
+                message: 'LoggedIn Successfully',
+                token: token,
+            })
+        } else {
+            res.status(400).json({ message: 'Invalid Credentials' })
+        }
+    } catch (error) {
+        res.status(500).json({ message: `Server Error ${error.message}` })
+    }
 }
 //@route /api/users/profileUpdate
 //@method PUT
@@ -148,5 +137,5 @@ export const deleteUser = async (req, res) => {
 }
 // Token Generate Function
 const generateToken = async (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' })
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' })
 }
