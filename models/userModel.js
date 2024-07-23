@@ -1,12 +1,13 @@
 import { Schema, model } from 'mongoose'
 
 // User Model
-const userSchema = Schema(
+const userSchema = new Schema(
     {
         full_name: String,
         email_address: { type: String, required: true, unique: true },
-        phone_number: { type: String, required: true },
+        phone_number: String,
         password: { type: String, required: true },
+        is_admin: { type: Boolean, required: true, default: false },
     },
     {
         timestamps: true,
@@ -26,5 +27,5 @@ const userReviewSchema = new Schema({
     comment: String,
 })
 
-export default model('User', userSchema)
+export const User = model('User', userSchema)
 export const UserReview = model('UserReview', userReviewSchema)

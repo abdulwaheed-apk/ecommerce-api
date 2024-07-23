@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler'
 import { validationResult } from 'express-validator'
 import { Types } from 'mongoose'
 import Exercise from '../models/exerciseModel.js'
-import User from '../models/userModel.js'
+import { User } from '../models/userModel.js'
 
 //**  Controller Functions */
 

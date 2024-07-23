@@ -1,21 +1,23 @@
 import { Router } from 'express'
 import { body, validationResult } from 'express-validator'
 import {
-    getUsers,
+    getAllUsers,
     register,
     login,
+    logout,
     profileUpdate,
     deleteUser,
 } from '../controllers/userController.js'
-import User from '../models/userModel.js'
-import verifyToken from '../middlewares/auth.js'
+import { authenticate, authorizeAdmin } from '../middlewares/auth.js'
 
 const router = Router()
 // Routes
-router.get('/', getUsers)
+router.get('/', authenticate, authorizeAdmin, getAllUsers)
 router.post('/register', register)
-router.post('/login', login)
-router.put('/profileUpdate', verifyToken, profileUpdate)
-router.delete('/deleteUser', verifyToken, deleteUser)
+router.post('/auth', login)
+router.post('/logout', logout)
+
+router.put('/profileUpdate', profileUpdate)
+router.delete('/deleteUser', deleteUser)
 
 export default router

@@ -6,7 +6,6 @@ import cookieParser from 'cookie-parser'
 import cors from 'cors'
 //file imports
 import connectDB from './config/connectDatabase.js'
-import verifyToken from './middlewares/auth.js'
 import userRoutes from './routes/userRoutes.js'
 import exerciseRoutes from './routes/exerciseRoutes.js'
 

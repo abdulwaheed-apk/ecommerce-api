@@ -1,20 +1,29 @@
 import { verify } from 'jsonwebtoken'
+import { User } from '../models/userModel.js'
 
-const verifyToken = async (req, res, next) => {
-    try {
-        let token = req.header('Authorization')
-        if (!token) {
-            return res.status(401).send('Unauthorized, you are not allowed.')
+export const authenticate = async (req, res, next) => {
+    let token
+    token = req.cookies.jwt
+    if (token) {
+        try {
+            const decoded = verify(token, process.env.JWT_SECRET)
+            req.user = await User.findById(decoded.id).select('-password')
+            next()
+        } catch (error) {
+            return res.status(401).json({
+                message: 'Not authorized, token failed',
+                error: error?.message,
+            })
         }
-        if (token.startsWith('Bearer')) {
-            token = token.slice(7, token.length).trimLeft()
-        }
-        const verified = verify(token, process.env.JWT_SECRET)
-        req.user = verified
-        next()
-    } catch (error) {
-        res.status(500).json({ message: error.message })
+    } else {
+        return res.status(401).json({ message: 'Not authorized, no token' })
     }
 }
 
-export default verifyToken
+export const authorizeAdmin = async (req, res, next) => {
+    if (req.user && req.user.is_admin) {
+        next()
+    } else {
+        return res.status(401).json({ message: 'Not authorized as an admin' })
+    }
+}
