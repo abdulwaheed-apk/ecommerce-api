@@ -1,9 +1,7 @@
 import express from 'express'
 import asyncHandler from 'express-async-handler'
-import { genSalt, hash, compare } from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import { genSalt, hash } from 'bcrypt'
 import bcrypt from 'bcrypt'
-import { check, validationResult } from 'express-validator'
 import { User } from '../models/userModel.js'
 import { generateToken } from '../utils/createToken.js'
 
