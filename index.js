@@ -7,6 +7,7 @@ import cors from 'cors'
 //file imports
 import connectDB from './config/connectDatabase.js'
 import userRoutes from './routes/userRoutes.js'
+import productRoutes from './routes/productRoutes.js'
 import exerciseRoutes from './routes/exerciseRoutes.js'
 
 //app definition
@@ -23,6 +24,7 @@ app.use(urlencoded({ extended: true }))
 app.get('/', async (req, res) => res.send('Hello'))
 
 app.use('/api/users', userRoutes)
+app.use('/api/admin', productRoutes)
 app.use('/api/exercises', exerciseRoutes)
 
 const port = process.env.PORT || 5000
