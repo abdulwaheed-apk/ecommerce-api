@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-// User Model
-const userSchema = new Schema(
+const UserSchema = new Schema(
     {
         full_name: String,
         email_address: { type: String, required: true, unique: true },
@@ -14,9 +13,8 @@ const userSchema = new Schema(
     }
 )
 
-// User Review Model
 //todo: need to verify the relation of ordered_product_id , either to ProductItem or to OrderLine
-const userReviewSchema = new Schema({
+const UserReviewSchema = new Schema({
     user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     ordered_product_id: {
         type: Schema.Types.ObjectId,
@@ -27,5 +25,5 @@ const userReviewSchema = new Schema({
     comment: String,
 })
 
-export const User = model('User', userSchema)
-export const UserReview = model('UserReview', userReviewSchema)
+export const User = model('User', UserSchema)
+export const Review = model('Review', UserReviewSchema)

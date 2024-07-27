@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-// Product Model
-const productSchema = new Schema({
+const ProductSchema = new Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     product_image: { type: String, required: true },
@@ -18,5 +17,4 @@ const productSchema = new Schema({
     product_images: [String],
 })
 
-// Register model with mongoose
-export const Product = model('Product', productSchema)
+export const Product = model('Product', ProductSchema)

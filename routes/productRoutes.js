@@ -10,15 +10,12 @@ import {
 
 const router = Router()
 
-router.post('/product', authenticate, authorizeAdmin, createProduct)
-router.get('/product/all', authenticate, authorizeAdmin, getAllProducts)
-router.delete('/product/:id', authenticate, authorizeAdmin, deleteProduct)
-router.patch('/product/:id', authenticate, authorizeAdmin, updateProduct)
-router.get(
-    '/product/:category',
-    authenticate,
-    authorizeAdmin,
-    getProductByCategory
-)
+//* Protect routes
+router.post('/admin/product', authenticate, authorizeAdmin, createProduct)
+router.patch('/admin/product/:id', authenticate, authorizeAdmin, updateProduct)
+router.delete('/admin/product/:id', authenticate, authorizeAdmin, deleteProduct)
+//* Public routes
+router.get('/product/all', getAllProducts)
+router.get('/product/:category', getProductByCategory)
 
 export default router

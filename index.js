@@ -20,10 +20,10 @@ app.use(json())
 app.use(urlencoded({ extended: true }))
 
 //Routes
-app.get('/', async (req, res) => res.send('Hello'))
+app.get('/', async (req, res) => res.send('Express.js Server'))
 
 app.use('/api/users', userRoutes)
-app.use('/api/admin', productRoutes)
+app.use('/api', productRoutes)
 
 const port = process.env.PORT || 5000
 
