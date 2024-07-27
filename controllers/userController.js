@@ -39,7 +39,10 @@ export const register = async (req, res) => {
             })
         } else res.status(400).json({ message: 'Invalid user data' })
     } catch (error) {
-        res.status(500).json({ message: `Server Error ${error.message}` })
+        console.error(`Server Error: ${error}`)
+        return res
+            .status(500)
+            .json({ message: 'Server Error: An unexpected error occurred' })
     }
 }
 //@route /api/users/auth
@@ -74,18 +77,28 @@ export const login = async (req, res) => {
             res.status(400).json({ message: 'Invalid Credentials' })
         }
     } catch (error) {
-        res.status(500).json({ message: `Server Error ${error.message}` })
+        console.error(`Server Error: ${error}`)
+        return res
+            .status(500)
+            .json({ message: 'Server Error: An unexpected error occurred' })
     }
 }
 //@route /api/users/logout
 //@method POST
 //@access private
 export const logout = async (req, res) => {
-    res.cookie('jwt', '', {
-        httpOnly: true,
-        expires: new Date(0),
-    })
-    return res.status(200).json({ message: 'Logged out successfully' })
+    try {
+        res.cookie('jwt', '', {
+            httpOnly: true,
+            expires: new Date(0),
+        })
+        return res.status(200).json({ message: 'Logged out successfully' })
+    } catch (error) {
+        console.error(`Server Error: ${error}`)
+        return res
+            .status(500)
+            .json({ message: 'Server Error: An unexpected error occurred' })
+    }
 }
 //@route /api/users/profileUpdate
 //@method PUT
@@ -134,16 +147,24 @@ export const deleteUser = async (req, res) => {
     //         const deletedUser = await findByIdAndDelete(req.user.id)
     //         res.status(200).json({ message: 'Your Account Deleted Successfully' })
     //     } catch (error) {
-    //         res.status(500).json({ message: `Server Error ${error.message}` })
+    // console.error(`Server Error: ${error}`)
+    // return res.status(500).json({ message: 'Server Error: An unexpected error occurred' })
     //     }
 }
 //@route /api/users
 //@method GET To get users
 //@access Admin
 export const getAllUsers = asyncHandler(async (req, res) => {
-    const users = await User.find({})
-    if (users.length === 0) {
-        res.status(404).json({ message: 'Users not found' })
+    try {
+        const users = await User.find({})
+        if (users.length === 0) {
+            res.status(404).json({ message: 'Users not found' })
+        }
+        res.status(200).json({ users })
+    } catch (error) {
+        console.error(`Server Error: ${error}`)
+        return res
+            .status(500)
+            .json({ message: 'Server Error: An unexpected error occurred' })
     }
-    res.status(200).json({ users })
 })

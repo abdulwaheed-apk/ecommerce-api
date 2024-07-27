@@ -8,9 +8,13 @@ const productSchema = new Schema({
     qty_in_stock: { type: Number, required: true },
     sku: { type: String, required: true },
     price: { type: Number, required: true },
+    sale_price: Number,
     category: { type: String, enum: ['men', 'women', 'juniors'] },
-    variation: { type: String, enum: ['S', 'M', 'L', 'XL', 'XXL'] },
-    color: { type: String, enum: ['black', 'white', 'blue', 'green', 'pink'] },
+    variation: { type: [String], enum: ['S', 'M', 'L', 'XL', 'XXL'] },
+    color: {
+        type: [String],
+        enum: ['black', 'white', 'blue', 'green', 'pink'],
+    },
     product_images: [String],
 })
 
