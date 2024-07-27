@@ -14,7 +14,6 @@ router.post('/product', authenticate, authorizeAdmin, createProduct)
 router.get('/product/all', authenticate, authorizeAdmin, getAllProducts)
 router.delete('/product/:id', authenticate, authorizeAdmin, deleteProduct)
 router.patch('/product/:id', authenticate, authorizeAdmin, updateProduct)
-
 router.get(
     '/product/:category',
     authenticate,

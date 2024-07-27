@@ -72,7 +72,8 @@ export const deleteProduct = async (req, res) => {
             return res.status(404).json({ message: 'Product not found' })
         }
         const deletedProduct = await Product.findByIdAndDelete(req.params.id)
-        res.status(200).json({ message: 'Product Deleted Successfully' })
+        console.log('deletedProduct', deletedProduct)
+        return res.status(200).json({ message: 'Product Deleted Successfully' })
     } catch (error) {
         console.error(`Server Error: ${error}`)
         return res
@@ -81,7 +82,7 @@ export const deleteProduct = async (req, res) => {
     }
 }
 //@route /api/admin/product/:id
-//@method PUT/PATCH To update product
+//@method PATCH To update product
 //@access private only admin
 export const updateProduct = async (req, res) => {
     try {
@@ -110,7 +111,17 @@ export const updateProduct = async (req, res) => {
 //@access private only admin
 export const getProductByCategory = async (req, res) => {
     try {
-        res.send(`Category name is ${req.params.category}`)
+        const { category } = req.params
+        const products = await Product.find({ category: category })
+        if (products.length === 0) {
+            return res
+                .status(404)
+                .json({ message: `${category} products not found` })
+        }
+        return res.status(200).json({
+            message: `All products for ${category} category`,
+            products,
+        })
     } catch (error) {
         console.error(`Server Error: ${error}`)
         return res
