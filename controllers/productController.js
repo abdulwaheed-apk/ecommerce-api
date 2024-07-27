@@ -7,11 +7,14 @@ export const getAllProducts = async (req, res) => {
     try {
         const products = await Product.find({})
         if (products.length === 0) {
-            res.status(404).json({ message: 'Products not found' })
+            return res.status(404).json({ message: 'Products not found' })
         }
         res.status(200).json({ message: 'All products', products })
     } catch (error) {
-        res.status(500).json({ message: `Server Error ${error.message}` })
+        console.error(`Server Error: ${error}`)
+        return res
+            .status(500)
+            .json({ message: 'Server Error: An unexpected error occurred' })
     }
 }
 //@route /api/admin/product
@@ -52,7 +55,10 @@ export const createProduct = async (req, res) => {
             product,
         })
     } catch (error) {
-        res.status(500).json({ message: `Server Error ${error.message}` })
+        console.error(`Server Error: ${error}`)
+        return res
+            .status(500)
+            .json({ message: 'Server Error: An unexpected error occurred' })
     }
 }
 //@route /api/admin/product/:id
@@ -68,24 +74,47 @@ export const deleteProduct = async (req, res) => {
         const deletedProduct = await Product.findByIdAndDelete(req.params.id)
         res.status(200).json({ message: 'Product Deleted Successfully' })
     } catch (error) {
-        res.status(500).json({ message: `Server Error ${error.message}` })
+        console.error(`Server Error: ${error}`)
+        return res
+            .status(500)
+            .json({ message: 'Server Error: An unexpected error occurred' })
     }
 }
 //@route /api/admin/product/:id
 //@method PUT/PATCH To update product
 //@access private only admin
 export const updateProduct = async (req, res) => {
-    const product = await Product.findById(req.params.id)
-
-    res.status(200).json({
-        message: 'Got it',
-        id: req.params.id,
-        q: `Do you want to update ${product.name}`,
-    })
+    try {
+        const { id } = req.params
+        const updates = req.body
+        const updatedProduct = await Product.findByIdAndUpdate(id, updates, {
+            new: true,
+            runValidators: true,
+        })
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Products not found' })
+        }
+        res.status(200).json({
+            message: 'Product updated successfully',
+            updateProduct,
+        })
+    } catch (error) {
+        console.error(`Server Error: ${error}`)
+        return res
+            .status(500)
+            .json({ message: 'Server Error: An unexpected error occurred' })
+    }
 }
 //@route /api/admin/product/:category
 //@method GET To get by category product
 //@access private only admin
 export const getProductByCategory = async (req, res) => {
-    res.send(`Category name is ${req.params.category}`)
+    try {
+        res.send(`Category name is ${req.params.category}`)
+    } catch (error) {
+        console.error(`Server Error: ${error}`)
+        return res
+            .status(500)
+            .json({ message: 'Server Error: An unexpected error occurred' })
+    }
 }
