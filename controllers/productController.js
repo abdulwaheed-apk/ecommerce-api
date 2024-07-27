@@ -49,7 +49,7 @@ export const createProduct = async (req, res) => {
             color,
             product_images: product_images,
         })
-        console.log('product created', product)
+
         return res.status(201).json({
             message: 'Product created successfully',
             product,
