@@ -8,6 +8,7 @@ import cors from 'cors'
 import connectDB from './config/connectDatabase.js'
 import userRoutes from './routes/userRoutes.js'
 import productRoutes from './routes/productRoutes.js'
+import cartRoutes from './routes/cartRoutes.js'
 
 //app definition
 const app = express()
@@ -24,6 +25,7 @@ app.get('/', async (req, res) => res.send('Express.js Server'))
 
 app.use('/api/users', userRoutes)
 app.use('/api', productRoutes)
+app.use('/api/cart', cartRoutes)
 
 const port = process.env.PORT || 5000
 

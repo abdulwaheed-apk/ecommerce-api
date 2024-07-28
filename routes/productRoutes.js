@@ -10,7 +10,7 @@ import {
 
 const router = Router()
 
-//* Protect routes
+//* Protected routes
 router.post('/admin/product', authenticate, authorizeAdmin, createProduct)
 router.patch('/admin/product/:id', authenticate, authorizeAdmin, updateProduct)
 router.delete('/admin/product/:id', authenticate, authorizeAdmin, deleteProduct)

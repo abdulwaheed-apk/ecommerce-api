@@ -38,10 +38,9 @@ export const createProduct = async (req, res) => {
             product,
         })
     } catch (error) {
-        console.error(`Server Error: ${error}`)
         return res
             .status(500)
-            .json({ message: 'Server Error: An unexpected error occurred' })
+            .json({ message: `Server Error: ${error.message}` })
     }
 }
 //@route /api/admin/product/:id
@@ -58,10 +57,9 @@ export const deleteProduct = async (req, res) => {
         console.log('deletedProduct', deletedProduct)
         return res.status(200).json({ message: 'Product Deleted Successfully' })
     } catch (error) {
-        console.error(`Server Error: ${error}`)
         return res
             .status(500)
-            .json({ message: 'Server Error: An unexpected error occurred' })
+            .json({ message: `Server Error: ${error.message}` })
     }
 }
 //@route /api/admin/product/:id
@@ -83,10 +81,9 @@ export const updateProduct = async (req, res) => {
             updateProduct,
         })
     } catch (error) {
-        console.error(`Server Error: ${error}`)
         return res
             .status(500)
-            .json({ message: 'Server Error: An unexpected error occurred' })
+            .json({ message: `Server Error: ${error.message}` })
     }
 }
 //@route /api/product/all
@@ -100,10 +97,9 @@ export const getAllProducts = async (req, res) => {
         }
         res.status(200).json({ message: 'All products', products })
     } catch (error) {
-        console.error(`Server Error: ${error}`)
         return res
             .status(500)
-            .json({ message: 'Server Error: An unexpected error occurred' })
+            .json({ message: `Server Error: ${error.message}` })
     }
 }
 //@route /api/product/:category
@@ -123,9 +119,8 @@ export const getProductByCategory = async (req, res) => {
             products,
         })
     } catch (error) {
-        console.error(`Server Error: ${error}`)
         return res
             .status(500)
-            .json({ message: 'Server Error: An unexpected error occurred' })
+            .json({ message: `Server Error: ${error.message}` })
     }
 }
