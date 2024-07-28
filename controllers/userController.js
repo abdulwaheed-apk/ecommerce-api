@@ -39,10 +39,9 @@ export const register = async (req, res) => {
             })
         } else res.status(400).json({ message: 'Invalid user data' })
     } catch (error) {
-        console.error(`Server Error: ${error}`)
         return res
             .status(500)
-            .json({ message: 'Server Error: An unexpected error occurred' })
+            .json({ message: `Server Error: ${error.message}` })
     }
 }
 //@route /api/users/auth
@@ -77,10 +76,9 @@ export const login = async (req, res) => {
             res.status(400).json({ message: 'Invalid Credentials' })
         }
     } catch (error) {
-        console.error(`Server Error: ${error}`)
         return res
             .status(500)
-            .json({ message: 'Server Error: An unexpected error occurred' })
+            .json({ message: `Server Error: ${error.message}` })
     }
 }
 //@route /api/users/logout
@@ -94,10 +92,9 @@ export const logout = async (req, res) => {
         })
         return res.status(200).json({ message: 'Logged out successfully' })
     } catch (error) {
-        console.error(`Server Error: ${error}`)
         return res
             .status(500)
-            .json({ message: 'Server Error: An unexpected error occurred' })
+            .json({ message: `Server Error: ${error.message}` })
     }
 }
 //@route /api/users/profileUpdate
@@ -147,8 +144,8 @@ export const deleteUser = async (req, res) => {
     //         const deletedUser = await findByIdAndDelete(req.user.id)
     //         res.status(200).json({ message: 'Your Account Deleted Successfully' })
     //     } catch (error) {
-    // console.error(`Server Error: ${error}`)
-    // return res.status(500).json({ message: 'Server Error: An unexpected error occurred' })
+    //
+    // return res.status(500).json({ message: `Server Error: ${error.message}` })
     //     }
 }
 //@route /api/users
@@ -162,9 +159,8 @@ export const getAllUsers = asyncHandler(async (req, res) => {
         }
         res.status(200).json({ users })
     } catch (error) {
-        console.error(`Server Error: ${error}`)
         return res
             .status(500)
-            .json({ message: 'Server Error: An unexpected error occurred' })
+            .json({ message: `Server Error: ${error.message}` })
     }
 })

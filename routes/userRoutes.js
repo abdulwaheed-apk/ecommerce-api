@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { body, validationResult } from 'express-validator'
+import { authenticate, authorizeAdmin } from '../middlewares/auth.js'
 import {
     getAllUsers,
     register,
@@ -8,10 +8,9 @@ import {
     profileUpdate,
     deleteUser,
 } from '../controllers/userController.js'
-import { authenticate, authorizeAdmin } from '../middlewares/auth.js'
 
 const router = Router()
-// Routes
+
 router.get('/', authenticate, authorizeAdmin, getAllUsers)
 router.post('/register', register)
 router.post('/auth', login)

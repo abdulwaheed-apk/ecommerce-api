@@ -8,7 +8,7 @@ entrypoint `index.js`
 
 Run server 
 ```
-npm start
+npm run dev
 ```
 
 create a `.env` file at root folder and and create environment variables `MONGODB_URI` , `PORT` and `JWT_SECRET`
