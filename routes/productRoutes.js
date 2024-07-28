@@ -10,12 +10,13 @@ import {
 
 const router = Router()
 
-//* Protected routes
+// Protected routes
 router.post('/admin/product', authenticate, authorizeAdmin, createProduct)
 router.patch('/admin/product/:id', authenticate, authorizeAdmin, updateProduct)
 router.delete('/admin/product/:id', authenticate, authorizeAdmin, deleteProduct)
-//* Public routes
-router.get('/product/all', getAllProducts)
-router.get('/product/:category', getProductByCategory)
+
+// Public routes
+router.get('/products', getAllProducts)
+router.get('/products/:category', getProductByCategory)
 
 export default router
