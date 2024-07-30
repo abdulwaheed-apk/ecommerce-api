@@ -27,6 +27,10 @@ export const getCart = async (req, res) => {
 export const addProductToCart = async (req, res) => {
     try {
         const { productId, quantity, price } = req.body
+
+        if (!productId || !quantity || !price) {
+            return res.status(400).json({ message: 'All fields are required' })
+        }
         let cart = await Cart.findOne({ user: req.user.id })
 
         if (!cart) {
@@ -63,7 +67,27 @@ export const addProductToCart = async (req, res) => {
 //@access private
 export const removeProductFromCart = async (req, res) => {
     try {
-        res.send('code me')
+        const { productId } = req.params
+
+        const cart = await Cart.findOne({ user: req.user.id })
+        if (cart.items.length === 0) {
+            return res.status(404).json({ message: 'Cart not found' })
+        }
+
+        cart.items = cart.items.filter(
+            (item) => item.product.toString() !== productId
+        )
+
+        cart.total = cart.items.reduce(
+            (total, item) => total + item.price * item.quantity,
+            0
+        )
+        await cart.save()
+
+        return res.status(200).json({
+            message: 'Product removed from cart successfully',
+            cart,
+        })
     } catch (error) {
         return res
             .status(500)
