@@ -1,6 +1,6 @@
 import { Cart } from '../models/cartModel.js'
 
-//@route /api/cart
+//@route /apiV1/cart
 //@method GET To get cart
 //@access private
 export const getCart = async (req, res) => {
@@ -21,7 +21,7 @@ export const getCart = async (req, res) => {
             .json({ message: `Server Error: ${error.message}` })
     }
 }
-//@route /api/cart/add
+//@route /apiV1/cart/add
 //@method POST To add item to cart
 //@access private
 export const addProductToCart = async (req, res) => {
@@ -62,7 +62,7 @@ export const addProductToCart = async (req, res) => {
             .json({ message: `Server Error: ${error.message}` })
     }
 }
-//@route /api/cart/remove/:productId
+//@route /apiV1/cart/remove/:productId
 //@method DELETE To remove item from cart
 //@access private
 export const removeProductFromCart = async (req, res) => {

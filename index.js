@@ -9,6 +9,7 @@ import connectDB from './config/connectDatabase.js'
 import userRoutes from './routes/userRoutes.js'
 import productRoutes from './routes/productRoutes.js'
 import cartRoutes from './routes/cartRoutes.js'
+import orderRoutes from './routes/orderRoutes.js'
 
 //app definition
 const app = express()
@@ -26,6 +27,7 @@ app.get('/', async (req, res) => res.send('Express.js Server'))
 app.use('/apiV1/users', userRoutes)
 app.use('/apiV1', productRoutes)
 app.use('/apiV1/cart', cartRoutes)
+app.use('/apiV1/orders', orderRoutes)
 
 const port = process.env.PORT || 5000
 
