@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
 
 // User Payment Method Model
-const userPaymentMethodSchema = new Schema({
+const PaymentMethodSchema = new Schema({
     user_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     payment_type_id: {
         type: Schema.Types.ObjectId,
@@ -15,12 +15,9 @@ const userPaymentMethodSchema = new Schema({
 })
 
 // Payment Type Model
-const paymentTypeSchema = new Schema({
+const PaymentTypeSchema = new Schema({
     value: { type: String, required: true },
 })
 
-export const UserPaymentMethod = model(
-    'UserPaymentMethod',
-    userPaymentMethodSchema
-)
-export const PaymentType = model('PaymentType', paymentTypeSchema)
+export const PaymentMethod = model('PaymentMethod', PaymentMethodSchema)
+export const PaymentType = model('PaymentType', PaymentTypeSchema)
