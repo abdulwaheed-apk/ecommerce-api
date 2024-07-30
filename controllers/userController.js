@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 import { User } from '../models/userModel.js'
 import { generateToken } from '../utils/createToken.js'
 
-//@route /api/users/register
+//@route /apiV1/users/register
 //@method POST To create user
 //@access public
 export const register = async (req, res) => {
@@ -44,7 +44,7 @@ export const register = async (req, res) => {
             .json({ message: `Server Error: ${error.message}` })
     }
 }
-//@route /api/users/auth
+//@route /apiV1/users/auth
 //@method POST
 //@access public
 export const login = async (req, res) => {
@@ -81,7 +81,7 @@ export const login = async (req, res) => {
             .json({ message: `Server Error: ${error.message}` })
     }
 }
-//@route /api/users/logout
+//@route /apiV1/users/logout
 //@method POST
 //@access private
 export const logout = async (req, res) => {
@@ -97,7 +97,7 @@ export const logout = async (req, res) => {
             .json({ message: `Server Error: ${error.message}` })
     }
 }
-//@route /api/users/profileUpdate
+//@route /apiV1/users/profileUpdate
 //@method PUT
 //@access Private
 export const profileUpdate = async (req, res) => {
@@ -132,7 +132,7 @@ export const profileUpdate = async (req, res) => {
     //     res.status(500).json({ message: `Server Error ${error.message}` })
     // }
 }
-//@route /api/users/deleteUser
+//@route /apiV1/users/deleteUser
 //@method DELETE
 //@access Private
 export const deleteUser = async (req, res) => {
@@ -148,7 +148,7 @@ export const deleteUser = async (req, res) => {
     // return res.status(500).json({ message: `Server Error: ${error.message}` })
     //     }
 }
-//@route /api/users
+//@route /apiV1/users
 //@method GET To get users
 //@access Admin
 export const getAllUsers = asyncHandler(async (req, res) => {

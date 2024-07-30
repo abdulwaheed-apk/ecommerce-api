@@ -1,6 +1,6 @@
 import { Product } from '../models/productModel.js'
 
-//@route /api/admin/product
+//@route /apiV1/admin/product
 //@method POST To create product
 //@access private only admin
 export const createProduct = async (req, res) => {
@@ -43,7 +43,7 @@ export const createProduct = async (req, res) => {
             .json({ message: `Server Error: ${error.message}` })
     }
 }
-//@route /api/admin/product/:id
+//@route /apiV1/admin/product/:id
 //@method DELETE To delete product
 //@access private only admin
 export const deleteProduct = async (req, res) => {
@@ -62,7 +62,7 @@ export const deleteProduct = async (req, res) => {
             .json({ message: `Server Error: ${error.message}` })
     }
 }
-//@route /api/admin/product/:id
+//@route /apiV1/admin/product/:id
 //@method PATCH To update product
 //@access private only admin
 export const updateProduct = async (req, res) => {
@@ -86,7 +86,7 @@ export const updateProduct = async (req, res) => {
             .json({ message: `Server Error: ${error.message}` })
     }
 }
-//@route /api/products
+//@route /apiV1/products
 //@method GET To get all product
 //@access public
 export const getAllProducts = async (req, res) => {
@@ -106,7 +106,7 @@ export const getAllProducts = async (req, res) => {
             .json({ message: `Server Error: ${error.message}` })
     }
 }
-//@route /api/products/:category
+//@route /apiV1/products/:category
 //@method GET To get by category product
 //@access public
 export const getProductByCategory = async (req, res) => {
