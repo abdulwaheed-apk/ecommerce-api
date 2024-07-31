@@ -21,7 +21,6 @@ config()
 app.use(cookieParser())
 app.use(json())
 app.use(urlencoded({ extended: true }))
-
 //Routes
 app.get('/', async (req, res) => res.send('Express.js Server'))
 
