@@ -10,6 +10,7 @@ import userRoutes from './routes/userRoutes.js'
 import productRoutes from './routes/productRoutes.js'
 import cartRoutes from './routes/cartRoutes.js'
 import orderRoutes from './routes/orderRoutes.js'
+import addressRoutes from './routes/addressRoutes.js'
 
 //app definition
 const app = express()
@@ -28,6 +29,7 @@ app.use('/apiV1/users', userRoutes)
 app.use('/apiV1', productRoutes)
 app.use('/apiV1/cart', cartRoutes)
 app.use('/apiV1/orders', orderRoutes)
+app.use('/apiV1/address', addressRoutes)
 
 const port = process.env.PORT || 5000
 
