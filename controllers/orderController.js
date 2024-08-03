@@ -30,11 +30,12 @@ export const createOrder = async (req, res) => {
         const paymentIntent = await stripe.paymentIntents.create({
             amount: Math.round(cart.total * 100),
             currency: 'usd',
-            // confirm: true,
+            confirm: true,
+            payment_method: "pm_card_visa",
             automatic_payment_methods: { enabled: true },
-            // return_url: 'https://your-website.com/order-confirmation',
+            return_url: 'https://www.stripe.com',
         })
-        res.json({ clientSecret: paymentIntent.client_secret })
+
         console.log('paymentIntent', paymentIntent)
 
         if (paymentIntent.status !== 'succeeded') {
@@ -57,7 +58,7 @@ export const createOrder = async (req, res) => {
 
         await Cart.findOneAndDelete({ user: req.user.id })
 
-        return res.status(201).json({ message: 'Order placed successfully', order })
+        return res.status(201).json({ message: 'Order placed successfully', order, clientSecret: paymentIntent.client_secret })
 
     } catch (error) {
         if (error.type === 'StripeCardError') {
