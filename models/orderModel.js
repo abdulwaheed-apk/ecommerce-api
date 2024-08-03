@@ -13,31 +13,27 @@ const OrderSchema = new Schema(
         total: { type: Number, required: true },
         order_status: {
             type: String,
-            enum: [
-                'Pending',
-                'Processing',
-                'Shipped',
-                'Delivered',
-                'Cancelled',
-            ],
+            enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled',],
             default: 'Pending',
         },
         shipping_address: {
-            street: String,
-            city: String,
-            state: String,
-            country: String,
-            zipCode: String,
+            type: Schema.Types.ObjectId,
+            ref: 'UserDefaultAddress',
+            required: true,
         },
         payment_method: {
-            type: Schema.Types.ObjectId,
-            ref: 'PaymentMethod',
+            type: String,
             required: true,
+            default: 'card'
         },
         payment_status: {
             type: String,
             enum: ['Pending', 'Completed', 'Failed'],
             default: 'Pending',
+        },
+        stripe_payment_intent_id: {
+            type: String,
+            required: true,
         },
     },
     { timestamps: true }
