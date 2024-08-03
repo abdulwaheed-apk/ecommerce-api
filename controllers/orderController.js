@@ -1,8 +1,10 @@
 import { Address, UserDefaultAddress } from '../models/addressModel.js'
+import { config } from 'dotenv'
 import { Cart } from '../models/cartModel.js'
 import { Order } from '../models/orderModel.js'
 import Stripe from 'stripe'
 
+config()
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 //@route /apiV1/orders
 //@method POST To Create order
@@ -28,11 +30,11 @@ export const createOrder = async (req, res) => {
         const paymentIntent = await stripe.paymentIntents.create({
             amount: Math.round(cart.total * 100),
             currency: 'usd',
-            payment_method: paymentMethod, // 'card'
-            confirm: true,
-            return_url: 'https://your-website.com/order-confirmation',
+            // confirm: true,
+            automatic_payment_methods: { enabled: true },
+            // return_url: 'https://your-website.com/order-confirmation',
         })
-
+        res.json({ clientSecret: paymentIntent.client_secret })
         console.log('paymentIntent', paymentIntent)
 
         if (paymentIntent.status !== 'succeeded') {
