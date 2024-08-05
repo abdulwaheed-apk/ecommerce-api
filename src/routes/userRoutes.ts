@@ -16,7 +16,7 @@ router.post('/register', register)
 router.post('/auth', login)
 router.post('/logout', authenticate, logout)
 
-router.put('/profileUpdate', authenticate, profileUpdate)
+router.patch('/profileUpdate', authenticate, profileUpdate)
 router.delete('/deleteUser', authenticate, deleteUser)
 
 export default router

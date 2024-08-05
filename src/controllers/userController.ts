@@ -103,7 +103,7 @@ export const logout = async (req: Request, res: Response) => {
     }
 }
 //@route /api/v1/users/profileUpdate
-//@method PUT
+//@method PATCH
 //@access Private
 export const profileUpdate = async (req: Request, res: Response) => {
     //     const user = await findById(req.user.id)

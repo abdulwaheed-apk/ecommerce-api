@@ -49,5 +49,5 @@ Admin only: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `GET` &nbsp;&nbsp;&nbsp;&nbsp; 
 Public: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `POST` &nbsp;&nbsp; `/api/v1/users/register`  <br>
 Public: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `POST` &nbsp;&nbsp; `/api/v1/users/auth` <br>
 Authenticated: &nbsp;&nbsp; `POST` &nbsp;&nbsp; `/api/v1/users/logout` <br>
-Authenticated: &nbsp;&nbsp; `POST` &nbsp;&nbsp; `/api/v1/users/profileUpdate`  <br>
+Authenticated: &nbsp;&nbsp; `PATCH` &nbsp;&nbsp; `/api/v1/users/profileUpdate`  <br>
 Authenticated: &nbsp;&nbsp; `POST` &nbsp;&nbsp; `/api/v1/users/deleteUser` <br>
