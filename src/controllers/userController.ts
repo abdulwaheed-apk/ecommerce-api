@@ -1,14 +1,13 @@
-import express from 'express'
-import asyncHandler from 'express-async-handler'
-import { genSalt, hash } from 'bcrypt'
-import bcrypt from 'bcrypt'
-import { User } from '../models/userModel.js'
-import { generateToken } from '../utils/createToken.js'
+import express, { Request, Response } from 'express'
+// import asyncHandler from 'express-async-handler'
+import { genSalt, hash, compare } from 'bcrypt'
+import { User } from '../models/userModel'
+import { generateToken } from '../utils/createToken'
 
-//@route /apiV1/users/register
+//@route /api/v1/users/register
 //@method POST To create user
 //@access public
-export const register = async (req, res) => {
+export const register = async (req: Request, res: Response) => {
     const { full_name, email_address, phone_number, password } = req.body
     if (!email_address || !password) {
         return res.status(400).json({ message: 'Please fill all the fields' })
@@ -39,15 +38,17 @@ export const register = async (req, res) => {
             })
         } else res.status(400).json({ message: 'Invalid user data' })
     } catch (error) {
-        return res
-            .status(500)
-            .json({ message: `Server Error: ${error.message}` })
+        if (error instanceof Error) {
+            return res
+                .status(500)
+                .json({ message: `Server Error: ${error.message}` })
+        }
     }
 }
-//@route /apiV1/users/auth
+//@route /api/v1/users/auth
 //@method POST
 //@access public
-export const login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
     const { email_address, password } = req.body
 
     try {
@@ -62,7 +63,7 @@ export const login = async (req, res) => {
                 .status(404)
                 .send({ message: 'User with this email not found' })
         }
-        const isMatch = await bcrypt.compare(password, user.password)
+        const isMatch = await compare(password, user.password)
         if (isMatch) {
             generateToken(res, user._id)
             return res.status(200).json({
@@ -76,15 +77,17 @@ export const login = async (req, res) => {
             res.status(400).json({ message: 'Invalid Credentials' })
         }
     } catch (error) {
-        return res
-            .status(500)
-            .json({ message: `Server Error: ${error.message}` })
+        if (error instanceof Error) {
+            return res
+                .status(500)
+                .json({ message: `Server Error: ${error.message}` })
+        }
     }
 }
-//@route /apiV1/users/logout
+//@route /api/v1/users/logout
 //@method POST
 //@access private
-export const logout = async (req, res) => {
+export const logout = async (req: Request, res: Response) => {
     try {
         res.cookie('jwt', '', {
             httpOnly: true,
@@ -92,15 +95,17 @@ export const logout = async (req, res) => {
         })
         return res.status(200).json({ message: 'Logged out successfully' })
     } catch (error) {
-        return res
-            .status(500)
-            .json({ message: `Server Error: ${error.message}` })
+        if (error instanceof Error) {
+            return res
+                .status(500)
+                .json({ message: `Server Error: ${error.message}` })
+        }
     }
 }
-//@route /apiV1/users/profileUpdate
+//@route /api/v1/users/profileUpdate
 //@method PUT
 //@access Private
-export const profileUpdate = async (req, res) => {
+export const profileUpdate = async (req: Request, res: Response) => {
     //     const user = await findById(req.user.id)
     // try {
     //     const { password, newPassword, username, email, name } = req.body
@@ -132,10 +137,10 @@ export const profileUpdate = async (req, res) => {
     //     res.status(500).json({ message: `Server Error ${error.message}` })
     // }
 }
-//@route /apiV1/users/deleteUser
+//@route /api/v1/users/deleteUser
 //@method DELETE
 //@access Private
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req: Request, res: Response) => {
     //     try {
     //         const user = await findById(req.user.id)
     //         if (!user) {
@@ -144,23 +149,29 @@ export const deleteUser = async (req, res) => {
     //         const deletedUser = await findByIdAndDelete(req.user.id)
     //         res.status(200).json({ message: 'Your Account Deleted Successfully' })
     //     } catch (error) {
-    //
-    // return res.status(500).json({ message: `Server Error: ${error.message}` })
+    // if (error instanceof Error) {
+    //     return res
+    //         .status(500)
+    //         .json({ message: `Server Error: ${error.message}` })
+    // }
     //     }
 }
-//@route /apiV1/users
+//@route /api/v1/users
 //@method GET To get users
 //@access Admin
-export const getAllUsers = asyncHandler(async (req, res) => {
+export const getAllUsers = async (req: Request, res: Response) => {
     try {
         const users = await User.find({})
+
         if (users.length === 0) {
-            res.status(404).json({ message: 'Users not found' })
+            return res.status(404).json({ message: 'Users not found' })
         }
         res.status(200).json({ users })
     } catch (error) {
-        return res
-            .status(500)
-            .json({ message: `Server Error: ${error.message}` })
+        if (error instanceof Error) {
+            res.status(500).json({ message: `Server Error: ${error.message}` })
+        } else {
+            res.status(500).json({ message: 'An unknown error occurred' })
+        }
     }
-})
+}
