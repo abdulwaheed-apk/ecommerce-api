@@ -6,17 +6,17 @@ import {
     logout,
     profileUpdate,
     deleteUser,
-    getAllUsers,
+    getUsers,
 } from '../controllers/userController'
 
 const router = Router()
 
-router.get('/', authenticate, authorizeAdmin, getAllUsers)
+router.get('/', authenticate, authorizeAdmin, getUsers)
 router.post('/register', register)
-router.post('/auth', login)
+router.post('/login', login)
 router.post('/logout', authenticate, logout)
 
-router.patch('/profileUpdate', authenticate, profileUpdate)
-router.delete('/deleteUser', authenticate, deleteUser)
+router.patch('/update-profile', authenticate, profileUpdate)
+router.delete('/delete-account', authenticate, deleteUser)
 
 export default router

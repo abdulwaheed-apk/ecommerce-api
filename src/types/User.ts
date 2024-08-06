@@ -16,3 +16,11 @@ export interface IUserReview extends Document {
     rating_value: number
     comment?: string
 }
+
+export interface UpdateProfileBody {
+    full_name?: string
+    email_address?: string
+    phone_number?: string
+    password?: string
+    old_password: string
+}
