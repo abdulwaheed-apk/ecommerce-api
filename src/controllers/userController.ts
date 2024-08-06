@@ -2,14 +2,18 @@ import express, { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 
 import { User } from '../models/userModel'
+import { UpdateProfileBody, RegisterBody, LoginBody } from '../types/User'
 import { generateToken } from '../utils/createToken'
-import { UpdateProfileBody } from '../types/User'
 
 //@route /api/v1/users/register
 //@method POST To create user
 //@access public
-export const register = async (req: Request, res: Response) => {
-    const { full_name, email_address, phone_number, password } = req.body
+export const register = async (
+    req: Request<{}, {}, RegisterBody>,
+    res: Response
+) => {
+    const { full_name, email_address, phone_number, password }: RegisterBody =
+        req.body
     if (!email_address || !password) {
         return res.status(400).json({ message: 'Please fill all the fields' })
     }
@@ -55,8 +59,8 @@ export const register = async (req: Request, res: Response) => {
 //@route /api/v1/users/login
 //@method POST
 //@access public
-export const login = async (req: Request, res: Response) => {
-    const { email_address, password } = req.body
+export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
+    const { email_address, password }: LoginBody = req.body
 
     try {
         if (!email_address || !password) {
@@ -121,7 +125,7 @@ export const logout = async (req: Request, res: Response) => {
 //@route /api/v1/users/update-profile
 //@method PATCH
 //@access Private
-export const profileUpdate = async (
+export const updateProfile = async (
     req: Request<{}, {}, UpdateProfileBody>,
     res: Response
 ) => {
@@ -139,7 +143,7 @@ export const profileUpdate = async (
         const hasUpdateField = updateFields.some((field) =>
             updateData.hasOwnProperty(field)
         )
-        console.log('hasUpdateField', hasUpdateField)
+
         if (!hasUpdateField) {
             return res.status(400).json({
                 message: 'At least one field must be provided for update',
@@ -215,13 +219,13 @@ export const profileUpdate = async (
 //@route /api/v1/users/delete-account
 //@method DELETE
 //@access Private
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteAccount = async (req: Request, res: Response) => {
     try {
         const user = await User.findById(req?.user?.id)
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
         }
-        const deletedUser = await User.findByIdAndDelete(req?.user?.id)
+        await User.findByIdAndDelete(req?.user?.id)
         res.status(200).json({ message: 'Your Account Deleted Successfully' })
     } catch (error) {
         if (error instanceof Error) {
