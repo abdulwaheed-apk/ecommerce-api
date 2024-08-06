@@ -1,71 +1,54 @@
-import { Product } from '../models/productModel.js'
+import { Request, Response } from 'express'
+import { Product } from '../models/productMode'
+import { CreateProductBody } from '../types/Product'
 
 //@route /api/v1/admin/product
 //@method POST To create product
 //@access private only admin
-export const createProduct = async (req, res) => {
-    const {
-        name,
-        description,
-        product_image,
-        qty_in_stock,
-        sku,
-        price,
-        sale_price,
-        category,
-        variation,
-        color,
-        product_images,
-    } = req.body
-
+export const createProduct = async (
+    req: Request<{}, {}, CreateProductBody>,
+    res: Response
+) => {
     try {
-        const product = await Product.create({
-            name,
-            description,
-            product_image,
-            qty_in_stock,
-            sku,
-            price,
-            sale_price: sale_price ? sale_price : 0,
-            category,
-            variation,
-            color,
-            product_images: product_images,
-        })
+        const productData: CreateProductBody = req.body
+        const product = await Product.create(productData)
 
         return res.status(201).json({
             message: 'Product created successfully',
             product,
         })
     } catch (error) {
-        return res
-            .status(500)
-            .json({ message: `Server Error: ${error.message}` })
+        if (error instanceof Error) {
+            res.status(500).json({ message: `Server Error: ${error.message}` })
+        } else {
+            res.status(500).json({ message: 'An unknown error occurred' })
+        }
     }
 }
 //@route /api/v1/admin/product/:id
 //@method DELETE To delete product
 //@access private only admin
-export const deleteProduct = async (req, res) => {
-    const product = await Product.findById(req.params.id)
-
+export const deleteProduct = async (req: Request, res: Response) => {
     try {
+        const product = await Product.findById(req.params.id)
         if (!product) {
             return res.status(404).json({ message: 'Product not found' })
         }
-        const deletedProduct = await Product.findByIdAndDelete(req.params.id)
-        console.log('deletedProduct', deletedProduct)
+        await Product.findByIdAndDelete(req.params.id)
+
         return res.status(200).json({ message: 'Product Deleted Successfully' })
     } catch (error) {
-        return res
-            .status(500)
-            .json({ message: `Server Error: ${error.message}` })
+        if (error instanceof Error) {
+            res.status(500).json({ message: `Server Error: ${error.message}` })
+        } else {
+            res.status(500).json({ message: 'An unknown error occurred' })
+        }
     }
 }
 //@route /api/v1/admin/product/:id
 //@method PATCH To update product
 //@access private only admin
-export const updateProduct = async (req, res) => {
+export const updateProduct = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const updates = req.body
@@ -81,15 +64,17 @@ export const updateProduct = async (req, res) => {
             updateProduct,
         })
     } catch (error) {
-        return res
-            .status(500)
-            .json({ message: `Server Error: ${error.message}` })
+        if (error instanceof Error) {
+            res.status(500).json({ message: `Server Error: ${error.message}` })
+        } else {
+            res.status(500).json({ message: 'An unknown error occurred' })
+        }
     }
 }
 //@route /api/v1/products
 //@method GET To get all product
 //@access public
-export const getAllProducts = async (req, res) => {
+export const getAllProducts = async (req: Request, res: Response) => {
     try {
         const products = await Product.find({})
 
@@ -101,15 +86,17 @@ export const getAllProducts = async (req, res) => {
             .status(200)
             .json({ message: 'Got all products successfully', products })
     } catch (error) {
-        return res
-            .status(500)
-            .json({ message: `Server Error: ${error.message}` })
+        if (error instanceof Error) {
+            res.status(500).json({ message: `Server Error: ${error.message}` })
+        } else {
+            res.status(500).json({ message: 'An unknown error occurred' })
+        }
     }
 }
 //@route /api/v1/products/:category
 //@method GET To get by category product
 //@access public
-export const getProductByCategory = async (req, res) => {
+export const getProductByCategory = async (req: Request, res: Response) => {
     try {
         const { category } = req.params
         const products = await Product.find({ category: category })
@@ -125,8 +112,10 @@ export const getProductByCategory = async (req, res) => {
             products,
         })
     } catch (error) {
-        return res
-            .status(500)
-            .json({ message: `Server Error: ${error.message}` })
+        if (error instanceof Error) {
+            res.status(500).json({ message: `Server Error: ${error.message}` })
+        } else {
+            res.status(500).json({ message: 'An unknown error occurred' })
+        }
     }
 }

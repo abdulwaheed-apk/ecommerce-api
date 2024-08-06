@@ -1,13 +1,14 @@
 import { Schema, model } from 'mongoose'
+import { IProduct } from '../types/Product'
 
-const ProductSchema = new Schema({
+const ProductSchema = new Schema<IProduct>({
     name: { type: String, required: true },
     description: { type: String, required: true },
     product_image: { type: String, required: true },
     qty_in_stock: { type: Number, required: true },
     sku: { type: String, required: true, unique: true },
     price: { type: Number, required: true },
-    sale_price: Number,
+    sale_price: { type: Number, default: 0 },
     category: { type: String, enum: ['men', 'women'] },
     variation: { type: [String], enum: ['S', 'M', 'L', 'XL', 'XXL'] },
     color: {
@@ -17,4 +18,4 @@ const ProductSchema = new Schema({
     product_images: [String],
 })
 
-export const Product = model('Product', ProductSchema)
+export const Product = model<IProduct>('Product', ProductSchema)
