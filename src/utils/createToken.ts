@@ -1,7 +1,9 @@
 import jwt from 'jsonwebtoken'
+import { Types } from 'mongoose'
+import { Response } from 'express'
 
-export const generateToken = async (res, id) => {
-    const token = jwt.sign({ id }, process.env.JWT_SECRET, {
+export const generateToken = async (res: Response, id: Types.ObjectId) => {
+    const token = jwt.sign({ id: id.toString() }, process.env.JWT_SECRET!, {
         expiresIn: '30d',
     })
     // Set JWT as an HTTP-Only Cookie
