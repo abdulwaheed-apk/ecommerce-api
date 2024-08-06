@@ -17,6 +17,16 @@ export interface IUserReview extends Document {
     comment?: string
 }
 
+export interface RegisterBody {
+    full_name?: string
+    email_address: string
+    phone_number?: string
+    password: string
+}
+export interface LoginBody {
+    email_address: string
+    password: string
+}
 export interface UpdateProfileBody {
     full_name?: string
     email_address?: string

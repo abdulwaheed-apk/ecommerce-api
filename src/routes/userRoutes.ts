@@ -4,8 +4,8 @@ import {
     register,
     login,
     logout,
-    profileUpdate,
-    deleteUser,
+    updateProfile,
+    deleteAccount,
     getUsers,
 } from '../controllers/userController'
 
@@ -16,7 +16,7 @@ router.post('/register', register)
 router.post('/login', login)
 router.post('/logout', authenticate, logout)
 
-router.patch('/update-profile', authenticate, profileUpdate)
-router.delete('/delete-account', authenticate, deleteUser)
+router.patch('/update-profile', authenticate, updateProfile)
+router.delete('/delete-account', authenticate, deleteAccount)
 
 export default router
