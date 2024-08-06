@@ -86,13 +86,7 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
         const isMatch = await bcrypt.compare(password, user.password)
         if (isMatch) {
             generateToken(res, user._id)
-            return res.status(200).json({
-                message: 'LoggedIn successfully',
-                _id: user._id,
-                name: user.full_name,
-                email: user.email_address,
-                isAdmin: user.is_admin,
-            })
+            return res.status(200).json({ message: 'LoggedIn successfully' })
         } else {
             res.status(400).json({ message: 'Invalid Credentials' })
         }
