@@ -14,7 +14,13 @@ export const register = async (req: Request, res: Response) => {
         return res.status(400).json({ message: 'Please fill all the fields' })
     }
     try {
-        const userExist = await User.findOne({ email_address })
+        const trimmedEmail = email_address.trim().toLowerCase()
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(trimmedEmail)) {
+            return res.status(400).json({ message: 'Invalid email format' })
+        }
+
+        const userExist = await User.findOne({ trimmedEmail })
         if (userExist) {
             return res
                 .status(400)
@@ -24,18 +30,18 @@ export const register = async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(password, salt)
         const newUser = await User.create({
             full_name,
-            email_address,
+            email_address: trimmedEmail,
             phone_number,
             password: hashedPassword,
         })
+
         if (newUser) {
             generateToken(res, newUser._id)
+            const { password, is_admin, ...userDetails } = newUser.toObject()
+
             return res.status(201).json({
                 message: 'Account created successfully',
-                _id: newUser._id,
-                name: newUser.full_name,
-                email: newUser.email_address,
-                isAdmin: newUser.is_admin,
+                user: userDetails,
             })
         } else res.status(400).json({ message: 'Invalid user data' })
     } catch (error) {
@@ -58,12 +64,21 @@ export const login = async (req: Request, res: Response) => {
                 .status(400)
                 .json({ message: "Login fields can't be empty" })
         }
+
+        const trimmedEmail = email_address.trim().toLowerCase()
+        if (!trimmedEmail.includes('@')) {
+            return res
+                .status(400)
+                .json({ message: 'Invalid email or password' })
+        }
+
         const user = await User.findOne({ email_address })
         if (!user) {
             return res
                 .status(404)
                 .send({ message: 'User with this email not found' })
         }
+
         const isMatch = await bcrypt.compare(password, user.password)
         if (isMatch) {
             generateToken(res, user._id)
@@ -136,19 +151,33 @@ export const profileUpdate = async (
         if (!user) {
             return res.status(404).json({ message: 'User not found' })
         }
-        // Verify old password
-        const isPasswordValid = await bcrypt.compare(
-            updateData.old_password,
-            user.password
-        )
+        // Only verify old password if updating password or email
+        if (updateData.password || updateData.email_address) {
+            if (!updateData.old_password) {
+                return res.status(400).json({
+                    message:
+                        'Old password is required for updating password or email',
+                })
+            }
+            // Verify old password
+            const isPasswordValid = await bcrypt.compare(
+                updateData.old_password,
+                user.password
+            )
 
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid old password' })
+            if (!isPasswordValid) {
+                return res.status(401).json({ message: 'Invalid old password' })
+            }
         }
 
         // Update fields
         if (updateData.full_name) user.full_name = updateData.full_name
         if (updateData.email_address) {
+            // Add email format validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+            if (!emailRegex.test(updateData.email_address)) {
+                return res.status(400).json({ message: 'Invalid email format' })
+            }
             user.email_address = updateData.email_address
         }
         if (updateData.phone_number) user.phone_number = updateData.phone_number
@@ -160,15 +189,24 @@ export const profileUpdate = async (
         }
         await user.save()
 
-        const updatedUser = await User.findById(userId).select('-password')
+        const { password, is_admin, ...otherUserDetails } = user.toObject()
 
         res.status(200).json({
             message: 'Profile updated successfully',
-            updatedUser,
+            updatedUser: otherUserDetails,
         })
     } catch (error) {
         if (error instanceof Error) {
-            res.status(500).json({ message: `Server Error: ${error.message}` })
+            if (error.name === 'ValidationError') {
+                res.status(400).json({
+                    message: 'Validation Error',
+                    details: error.message,
+                })
+            } else {
+                res.status(500).json({
+                    message: `Server Error: ${error.message}`,
+                })
+            }
         } else {
             res.status(500).json({ message: 'An unknown error occurred' })
         }
