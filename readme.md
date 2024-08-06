@@ -9,6 +9,9 @@ This is an Ecommerce API built with Express.js, TypeScript, and MongoDB.
 - Cart Management
 - Product Management
 - Order Management
+- Payment Processing
+- Product Review
+- Order Tracking
 
 ## Technologies
 
@@ -16,7 +19,7 @@ This is an Ecommerce API built with Express.js, TypeScript, and MongoDB.
 - TypeScript
 - MongoDB
 - Stripe
-- JWT - Auth
+- JWT
 
 ## Requirements
 
@@ -40,14 +43,3 @@ create a `.env` file at root folder and and create following environment variabl
 `POR`=3000  <br>
 `JWT_SECRET`= <br>
 `STRIPE_SECRET_KEY`=
-
-
-## API endpoints
-#### User Endpoints
-
-Admin only: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `GET` &nbsp;&nbsp;&nbsp;&nbsp;  `/api/v1/users`  <br>
-Public: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `POST` &nbsp;&nbsp; `/api/v1/users/register`  <br>
-Public: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; `POST` &nbsp;&nbsp; `/api/v1/users/auth` <br>
-Authenticated: &nbsp;&nbsp; `POST` &nbsp;&nbsp; `/api/v1/users/logout` <br>
-Authenticated: &nbsp;&nbsp; `PATCH` &nbsp;&nbsp; `/api/v1/users/profileUpdate`  <br>
-Authenticated: &nbsp;&nbsp; `POST` &nbsp;&nbsp; `/api/v1/users/deleteUser` <br>
