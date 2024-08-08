@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { IProduct } from '../types/Product'
+import { IProduct } from '../types/product'
 
 const ProductSchema = new Schema<IProduct>({
     name: { type: String, required: true },
@@ -9,7 +9,7 @@ const ProductSchema = new Schema<IProduct>({
     sku: { type: String, required: true, unique: true },
     price: { type: Number, required: true },
     sale_price: { type: Number, default: 0 },
-    category: { type: String, enum: ['men', 'women'] },
+    category: { type: String, enum: ['men', 'women'], required: true },
     variation: { type: [String], enum: ['S', 'M', 'L', 'XL', 'XXL'] },
     color: {
         type: [String],

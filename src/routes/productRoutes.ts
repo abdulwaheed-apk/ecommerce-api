@@ -5,8 +5,9 @@ import {
     createProduct,
     deleteProduct,
     getAllProducts,
-    getProductByCategory,
+    getProduct,
     updateProduct,
+    getProductByCategory,
 } from '../controllers/productController'
 
 const router = Router()
@@ -18,6 +19,7 @@ router.delete('/admin/product/:id', authenticate, authorizeAdmin, deleteProduct)
 
 // Public routes
 router.get('/products', getAllProducts)
+router.get('/products/:productId', getProduct)
 router.get('/products/:category', getProductByCategory)
 
 export default router

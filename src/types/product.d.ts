@@ -31,5 +31,15 @@ export interface CreateProductBody {
     color: ColorTypes[]
     product_images: string[]
 }
-
-export interface UpdateProductBody {}
+export interface UpdateProductBody {
+    name?: string
+    description?: string
+    product_image?: string
+    qty_in_stock?: number
+    price?: number
+    sale_price?: number
+    category?: 'men' | 'women'
+    variation?: VariationTypes[]
+    color?: ColorTypes[]
+    product_images?: string[]
+}

@@ -5,7 +5,7 @@ import cors from 'cors'
 //file imports
 import connectDB from './config/connectDatabase'
 import userRoutes from './routes/userRoutes'
-// import productRoutes from './routes/productRoutes'
+import productRoutes from './routes/productRoutes'
 // import cartRoutes from './routes/cartRoutes'
 // import orderRoutes from './routes/orderRoutes'
 // import addressRoutes from './routes/addressRoutes'
@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
     res.send('Hello, Express with TypeScript!')
 })
 app.use('/api/v1/users', userRoutes)
-// app.use('/api/v1', productRoutes)
+app.use('/api/v1', productRoutes)
 // app.use('/api/v1/cart', cartRoutes)
 // app.use('/api/v1/orders', orderRoutes)
 // app.use('/api/v1/address', addressRoutes)
