@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 
 import { User } from '../models/userModel'
-import { UpdateProfileBody, RegisterBody, LoginBody } from '../types/User'
+import { UpdateProfileBody, RegisterBody, LoginBody } from '../types/user'
 import { generateToken } from '../utils/createToken'
 
 //@route /api/v1/users/register

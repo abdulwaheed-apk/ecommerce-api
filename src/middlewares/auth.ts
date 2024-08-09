@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt, { verify } from 'jsonwebtoken'
 import { User } from '../models/userModel'
-import { IUser } from '../types/User'
+import { IUser } from '../types/user'
 
 interface JwtPayload {
     id: string
